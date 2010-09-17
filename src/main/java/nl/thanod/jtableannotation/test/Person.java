@@ -3,11 +3,14 @@ package nl.thanod.jtableannotation.test;
 import nl.thanod.jtableannotation.JTableColumn;
 
 public class Person {
+	
 	@JTableColumn("Surname")
 	private String name;
+	
 	@JTableColumn("Firstname")
 	private String firstname;
-	@JTableColumn("Age")
+	
+	@JTableColumn
 	private int age;
 	
 	public Person(String name, String firstname, int age) {
@@ -19,7 +22,7 @@ public class Person {
 	
 	@JTableColumn
 	public boolean isAdmin(){
-		return name.startsWith("Bollen") || name.endsWith("ijk");
+		return firstname.startsWith( "Ko" ) || name.endsWith( "ijk" ) || age == 1337;
 	}
 	
 	@Override
