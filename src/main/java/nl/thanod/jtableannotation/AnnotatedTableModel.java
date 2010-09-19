@@ -16,18 +16,19 @@ public class AnnotatedTableModel<T> extends AbstractTableModel {
 	private final List<T> data;
 	private final List<ColumnHeader> header;
 	
-	public AnnotatedTableModel(Class<T> clazz, Iterable<T> data){
+	public AnnotatedTableModel(Class<? super T> clazz, Iterable<? extends T> data){
 		this(clazz);
 		this.setData(data);
 	}
 
-	public AnnotatedTableModel(Class<T> clazz){
+	public AnnotatedTableModel(Class<? super T> clazz){
+		super();
 		this.data = new LinkedList<T>();
-		this.header = ColumnHeader.getHeadersFromClass(clazz);
+		this.header = new LinkedList<ColumnHeader>(ColumnHeader.getHeadersFromClass(clazz));
 		Collections.sort(this.header);
 	}
 	
-	public void setData(Iterable<T> data){
+	public void setData(Iterable<? extends T> data){
 		this.data.clear();
 		for (T t:data)
 			this.data.add(t);
@@ -64,6 +65,7 @@ public class AnnotatedTableModel<T> extends AbstractTableModel {
 	}
 	
 	public T[] getData(int ... indices){
+		@SuppressWarnings("unchecked")
 		T[] ts = (T[])new Object[indices.length];
 		for (int i = 0; i < indices.length; i++)
 			ts[i] = this.getData(indices[i]);

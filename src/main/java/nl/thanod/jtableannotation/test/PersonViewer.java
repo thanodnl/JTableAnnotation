@@ -11,9 +11,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import nl.thanod.jtableannotation.AnnotatedTableModel;
 
@@ -29,7 +26,7 @@ public class PersonViewer extends JFrame {
 		this.setSize(400, 400);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		final AnnotatedTableModel<Person> model = new AnnotatedTableModel<Person>(Person.class,persons);
+		final AnnotatedTableModel<Person> model = new AnnotatedTableModel<Person>(SimplePersonView.class,persons);
 		final JTable table = new JTable(model);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -48,7 +45,7 @@ public class PersonViewer extends JFrame {
 		persons.add(new Person("Zwaan", "Sam", 24));
 		persons.add(new Person("Bollen", "Koen", 3));
 		persons.add(new Person("Dijk", "Nils", 1337));
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 1000; i++) {
 			persons.add( new Person( "Je moeder #"+i, "Nils", i ));
 		}
 		new PersonViewer(persons);

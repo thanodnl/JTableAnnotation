@@ -3,8 +3,8 @@ package nl.thanod.jtableannotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public abstract class ColumnHeader implements Comparable<ColumnHeader> {
 	public final Class<?> type;
@@ -19,9 +19,46 @@ public abstract class ColumnHeader implements Comparable<ColumnHeader> {
 	
 	@Override
 	public int compareTo(ColumnHeader o) {
-		return index-o.index;
+		int diff = index-o.index;
+		if (diff == 0)
+			diff = this.name.compareTo(o.name);
+		return diff;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ColumnHeader other = (ColumnHeader) obj;
+		if (index != other.index)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
 	public abstract Object getValue(Object o);
 	
 	private static String nameResolver(String first, String second){
@@ -69,6 +106,31 @@ public abstract class ColumnHeader implements Comparable<ColumnHeader> {
 				return ball.getClass().getCanonicalName();
 			}
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = super.hashCode();
+			result = prime * result + ((f == null) ? 0 : f.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (!super.equals(obj))
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			FieldColumnHeader other = (FieldColumnHeader) obj;
+			if (f == null) {
+				if (other.f != null)
+					return false;
+			} else if (!f.equals(other.f))
+				return false;
+			return true;
+		}
 		
 	}
 	
@@ -91,12 +153,39 @@ public abstract class ColumnHeader implements Comparable<ColumnHeader> {
 				return ball.getClass().getCanonicalName();
 			}
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = super.hashCode();
+			result = prime * result + ((m == null) ? 0 : m.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (!super.equals(obj))
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			MethodColumnHeader other = (MethodColumnHeader) obj;
+			if (m == null) {
+				if (other.m != null)
+					return false;
+			} else if (!m.equals(other.m))
+				return false;
+			return true;
+		}
+		
+		
 	}
 	
-	public static List<ColumnHeader> getHeadersFromClass(Class<?> clazz){
+	public static Set<ColumnHeader> getHeadersFromClass(Class<?> clazz){
 		if (clazz == null)
-			return Collections.emptyList();
-		List<ColumnHeader> columns = new LinkedList<ColumnHeader>();
+			return Collections.emptySet();
+		Set<ColumnHeader> columns = new TreeSet<ColumnHeader>();
 		for(Field f:clazz.getDeclaredFields()){
 			JTableColumn a = f.getAnnotation(JTableColumn.class);
 			if (a == null)

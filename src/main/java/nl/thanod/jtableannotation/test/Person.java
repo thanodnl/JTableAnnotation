@@ -2,15 +2,13 @@ package nl.thanod.jtableannotation.test;
 
 import nl.thanod.jtableannotation.JTableColumn;
 
-public class Person {
+public class Person implements SimplePersonView,AdminPersonView{
 	
-	@JTableColumn("Surname")
 	private String name;
-	
-	@JTableColumn("Firstname")
+
 	private String firstname;
-	
-	@JTableColumn
+
+	@JTableColumn(index=1)
 	private int age;
 	
 	public Person(String name, String firstname, int age) {
@@ -20,7 +18,7 @@ public class Person {
 		this.age = age;
 	}
 	
-	@JTableColumn
+	@Override
 	public boolean isAdmin(){
 		return firstname.startsWith( "Ko" ) || name.endsWith( "ijk" ) || age == 1337;
 	}
@@ -28,5 +26,15 @@ public class Person {
 	@Override
 	public String toString(){
 		return firstname + " " + name;
+	}
+
+	@Override
+	public String getFirstname() {
+		return this.firstname;
+	}
+
+	@Override
+	public String getSurname() {
+		return this.name;
 	}
 }
