@@ -18,6 +18,11 @@ public class Person implements SimplePersonView,AdminPersonView{
 		this.age = age;
 	}
 	
+	@JTableColumn(index=2)
+	public String initials(){
+		return this.firstname.substring(0, 1) + ". " + this.name;
+	}
+	
 	@Override
 	public boolean isAdmin(){
 		return firstname.startsWith( "Ko" ) || name.endsWith( "ijk" ) || age == 1337;
