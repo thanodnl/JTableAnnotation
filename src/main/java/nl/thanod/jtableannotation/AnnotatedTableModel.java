@@ -1,10 +1,12 @@
 package nl.thanod.jtableannotation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class AnnotatedTableModel<T> extends AbstractTableModel {
 
@@ -23,7 +25,7 @@ public class AnnotatedTableModel<T> extends AbstractTableModel {
 
 	public AnnotatedTableModel(Class<? super T> clazz){
 		super();
-		this.data = new LinkedList<T>();
+		this.data = new ArrayList<T>();
 		this.header = new LinkedList<ColumnHeader>(ColumnHeader.getHeadersFromClass(clazz));
 		Collections.sort(this.header);
 	}

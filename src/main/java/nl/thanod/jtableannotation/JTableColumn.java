@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface JTableColumn {
 	String value() default "";
-	int index() default 0; 
+	int index() default 0;
 }
